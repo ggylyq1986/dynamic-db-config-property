@@ -20,6 +20,7 @@ In addition, in the "Property Status" page you could check the previously defaul
 
 ### Setp1 Installation
 Installing the dynamic DB config property plugin in BuildConfig.groovy: 
+
 plugins{
 	compile ":dynamic-db-config-property:0.0.1"
 }
@@ -34,8 +35,12 @@ If you used Spring Security, to config the privilege using method below:
 In Config.groovy, set up privilege of spring security for the plugin:
 
 grails.plugins.springsecurity.interceptUrlMap = [
+
 	/ configProperty/create':['xxxxxxx']
+	
+	
 	/ configProperty/list':['xxxxxxx']
+	
 ]
 
 ### Setp4 Set up frequently-used properties
