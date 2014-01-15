@@ -1,6 +1,6 @@
 class DynamicDbConfigPropertyGrailsPlugin {
     // the plugin version
-    def version = "0.2"
+    def version = "0.0.1"
     // the version or versions of Grails the plugin is designed for
     def grailsVersion = "2.1 > *"
     // the other plugins this plugin depends on
@@ -12,8 +12,8 @@ class DynamicDbConfigPropertyGrailsPlugin {
 
     // TODO Fill in these fields
     def title = "Dynamic Db Config Property Plugin" // Headline display name of the plugin
-    def author = "Your name"
-    def authorEmail = ""
+    def author = "Peter Newnam, Zoran Stojakovic, Guanyu Guo"
+    def authorEmail = "ggy1986@163.com"
     def description = '''\
 Brief summary/description of the plugin.
 '''
