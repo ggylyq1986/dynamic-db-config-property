@@ -21,11 +21,11 @@
 					<g:link class="icon icon_role" controller="configProperty" action="Create">Create Property</g:link>
 				</li>
 				<li class="ui-state-default ui-corner-top">
-					<g:link class="icon icon_role" controller="configProperty" action="Compare">Compare Property</g:link>
+					<g:link class="icon icon_role" controller="configProperty" action="Compare">Property Status</g:link>
 				</li>
 			</ul>
 			<div id="list-configProperty" class="content scaffold-list" role="main">
-				<h2><font class="synpagecomment">* You could quickly tick boxes as frequently-used properties to "Manage Frequently-Used Property" Page. Then you should manage them on "Manage Property" Page.</font></h2>
+				<h2><font class="synpagecomment">* You could quickly tick boxes as frequently-used properties to "Manage Frequently-Used Property" Page. Then you should manage them on "Manage Property" Page. More importantly, only marked as frequently-used properties could be activated to work on the project. </font></h2>
 				<g:if test="${flash.message}">
 				<div class="message" role="status">${flash.message}</div>
 				</g:if>

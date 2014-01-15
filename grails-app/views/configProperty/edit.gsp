@@ -20,7 +20,7 @@
 					<g:link class="icon icon_role" controller="configProperty" action="Create">Create Property</g:link>
 				</li>
 				<li class="ui-state-default ui-corner-top">
-					<g:link class="icon icon_role" controller="configProperty" action="Compare">Compare Property</g:link>
+					<g:link class="icon icon_role" controller="configProperty" action="Compare">Property Status</g:link>
 				</li>
 			</ul>
 			<div id="edit-configProperty" class="content scaffold-create" role="main">
