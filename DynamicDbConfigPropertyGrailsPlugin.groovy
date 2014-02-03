@@ -33,7 +33,7 @@ This plugin provides your application the ability to change the config propertie
     def developers = [ [ name: "Peter Newnam", email: "pnewnam@uow.edu.au" ], [ name: "Zoran Stojakovic", email: "zorans@uow.edu.au" ]]
 
     // Location of the plugin's issue tracker.
-    def issueManagement = [ system: "Github", url: "https://github.com/ggylyq1986/dynamic-db-config-property/issues" ]
+	def issueManagement = [ system: "Github", url: "https://github.com/ggylyq1986/dynamic-db-config-property/issues" ]
 
     // Online location of the plugin's browseable source code.
 	def scm = [ url: "https://github.com/ggylyq1986/dynamic-db-config-property" ]
