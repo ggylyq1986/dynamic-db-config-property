@@ -31,9 +31,9 @@
 					<thead>
 						<tr>
 						
-							<g:sortableColumn property="key" title="${message(code: 'configProperty.key.label', default: 'Key')}" />
-						
-							<g:sortableColumn property="value" title="${message(code: 'configProperty.value.label', default: 'Value')}" />
+							<th><g:message code="configProperty.key.label" default="Key" /></th>
+							
+							<th><g:message code="configProperty.value.label" default="Value" /></th>
 							
 							<th class="sortable"><a href="#">Is In Config File</a></th>
 							

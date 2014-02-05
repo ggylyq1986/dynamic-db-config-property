@@ -32,9 +32,9 @@
 						<tr>
 							<th><g:message code="default.Property.Key" default="Property Key" /></th>
 							
-							<th><g:message code="default.Property.DB" default="Default Value" /></th>
+							<th><g:message code="default.Property.Default.Value" default="Default Value" /></th>
 						
-							<th><g:message code="default.Property.DB" default="Current Value" /></th>
+							<th><g:message code="default.Property.Current.Value" default="Current Value" /></th>
 							
 						</tr>
 					</thead>
