@@ -1,6 +1,6 @@
 package com.dbconfig
 
-import com.dbconfig.ConfigProperty;
+import com.dbconfig.ConfigProperty
 
 class ConfigPropertyService {
 
@@ -8,7 +8,7 @@ class ConfigPropertyService {
 		try {
 			if (value?.toString() && !((value instanceof List) || (value instanceof Closure))) {
 				ConfigProperty configProperty = ConfigProperty.findByKey(key)
-				if(!configProperty){
+				if(!configProperty && !value?.toString()?.contains("'")){
 					new ConfigProperty(key: key, value: value.toString(), description:"", disable: false).save()
 				}
 			}

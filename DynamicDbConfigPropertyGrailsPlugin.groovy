@@ -1,8 +1,8 @@
 class DynamicDbConfigPropertyGrailsPlugin {
     // the plugin version
-    def version = "0.0.1"
+    def version = "0.0.4"
     // the version or versions of Grails the plugin is designed for
-    def grailsVersion = "2.1 > *"
+    def grailsVersion = "2.2 > *"
     // the other plugins this plugin depends on
     def dependsOn = [:]
     // resources that are excluded from plugin packaging
