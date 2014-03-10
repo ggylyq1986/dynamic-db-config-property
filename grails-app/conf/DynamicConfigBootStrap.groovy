@@ -9,12 +9,8 @@ class DynamicConfigBootStrap {
 	def grailsApplication
 	
     def init = {servletContext ->
-		
-		grailsApplication.flatConfig.each {key, value ->
-			configPropertyService.loadValues(key, value)
-		}
         
-        ConfigProperty.findAllByDisable(true)*.updateConfigMap()
+        ConfigProperty.list()*.updateConfigMap()
     }
 
     def destroy = {

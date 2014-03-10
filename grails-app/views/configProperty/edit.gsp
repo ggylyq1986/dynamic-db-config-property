@@ -9,17 +9,11 @@
 	<body>
 		<div id="tabs" class="ui-tabs ui-widget ui-widget-content ui-corner-all ui-resizable">
 			<ul class="ui-tabs-nav ui-helper-clearfix ui-widget-header">
+				<li class="ui-state-default ui-corner-top">
+					<g:link class="" controller="configProperty" action="list">Property Status</g:link>
+				</li>
 				<li class="ui-state-default ui-corner-top ui-tabs-selected ui-state-active">
-					<g:link class="" controller="configProperty" action="list">Manage Frequently-Used Property</g:link>
-				</li>
-				<li class="ui-state-default ui-corner-top">
-					<g:link class="" controller="configProperty" action="Synchronize">All Property</g:link>
-				</li>
-				<li class="ui-state-default ui-corner-top">
-					<g:link class="" controller="configProperty" action="Create">Create Property</g:link>
-				</li>
-				<li class="ui-state-default ui-corner-top">
-					<g:link class="" controller="configProperty" action="Compare">Property Status</g:link>
+					<g:link class="" controller="configProperty" action="create">Create Property</g:link>
 				</li>
 			</ul>
 			<div id="edit-configProperty" class="content scaffold-create" role="main">

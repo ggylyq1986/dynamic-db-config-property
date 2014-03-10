@@ -2,6 +2,7 @@ package com.dbconfig
 
 import org.springframework.dao.DataIntegrityViolationException
 import org.codehaus.groovy.grails.commons.GrailsApplication
+import org.codehaus.groovy.grails.commons.ConfigurationHolder as CH
 
 import com.dbconfig.ConfigProperty;
 
@@ -15,23 +16,32 @@ class ConfigPropertyController {
     def index() {
         redirect(action: "list", params: params)
     }
-
-    def list(Integer max) {
-		def properties = session["DBCfgProperties"]
-		if(!properties){
-			properties = grailsApplication.flatConfig
-			session.setAttribute("DBCfgProperties", properties)
-		}
-        [configPropertyInstanceList: ConfigProperty.findAllByDisable(true), configPropertyInstanceTotal: ConfigProperty.count(), properties : grailsApplication.flatConfig]
-    }
 	
-	def synchronize(Integer max) {
-		def properties = session["DBCfgProperties"]
-		if(!properties){
-			properties = grailsApplication.flatConfig
-			session.setAttribute("DBCfgProperties", properties)
+	def list(Integer max) {
+		
+		def fileProperties = grailsApplication.flatConfig
+		
+		def comparedProperties = fileProperties.collect {key, value ->
+			def dbProperty = ConfigProperty.findByKey(key)
+			def isInDb = dbProperty? true : false 
+			def dbId = dbProperty? dbProperty.id : null
+			def currentPro = dbProperty? dbProperty.value?.toString() :  grailsApplication.flatConfig[key]?.toString()
+			
+			new ComparedProperty(dbId, key.toString(), value.toString(), dbProperty?.value?.toString(), currentPro, isInDb)
 		}
-		[configPropertyInstanceList: ConfigProperty.list(params), configPropertyInstanceTotal: ConfigProperty.count(), properties : grailsApplication.flatConfig]
+		
+		ConfigProperty.list().each {
+			
+			if(!grailsApplication.flatConfig[it.key] && !"".equals(grailsApplication.flatConfig[it.key])){
+				grailsApplication.flatConfig[it.key] = ""
+				def comparedProperty = new ComparedProperty(it.id, it.key.toString(), null, it.value?.toString(), it.value?.toString(), true)
+				if(!comparedProperties.contains(comparedProperty)){
+					comparedProperties.add(comparedProperty)
+				}
+			}
+		}
+		
+		[comparedProperties: comparedProperties, totalNum: comparedProperties.size()]
 	}
 
     def create() {
@@ -40,7 +50,6 @@ class ConfigPropertyController {
 
     def save() {
         def configPropertyInstance = new ConfigProperty(params)
-		configPropertyInstance.disable = true
         if (!configPropertyInstance.save(flush: true)) {
             render(view: "create", model: [configPropertyInstance: configPropertyInstance])
             return
@@ -77,7 +86,6 @@ class ConfigPropertyController {
 
     def update(Long id, Long version) {
         def configPropertyInstance = ConfigProperty.get(id)
-		configPropertyInstance.disable = true
         if (!configPropertyInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'configProperty.label', default: 'ConfigProperty'), id])
             redirect(action: "list")
@@ -125,11 +133,11 @@ class ConfigPropertyController {
     }
 	
 	def addToFrequentlyUsedList() {
-		def configProperty = ConfigProperty.get(params.id)
-		configProperty.disable = true
+		
+		def configProperty = new ConfigProperty(params.key?.toString(), params.value?.toString(), "")
 		configProperty.save()
 		
-		render "ok"
+		render configProperty.id
 	}
 	
 	def compare() {
@@ -140,7 +148,7 @@ class ConfigPropertyController {
 			def dbProperty = it.value
 			def fileProperty = fileProperties[it.key]
 			
-			new ComparedProperty(it.key?.toString(), dbProperty?.toString(), fileProperty?.toString())
+			new ComparedProperty(it.key?.toString(), dbProperty?.toString(), fileProperty?.toString(), null)
 		}
 		
 		[comparedProperties: comparedProperties]
@@ -148,13 +156,19 @@ class ConfigPropertyController {
 }
 
 class ComparedProperty {
+	def dbId
 	String key
-	String dbProperty
 	String fileProperty
+	String dbProperty
+	String currentProperty
+	boolean isInDb
 	
-	public ComparedProperty (String key, String dbProperty, String fileProperty) {
+	public ComparedProperty (def dbId, String key, String fileProperty, String dbProperty, String currentProperty, boolean isInDb) {
+		this.dbId = dbId
 		this.key = key
-		this.dbProperty = dbProperty
 		this.fileProperty = fileProperty
+		this.dbProperty = dbProperty
+		this.currentProperty = currentProperty
+		this.isInDb = isInDb
 	}
 }

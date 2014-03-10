@@ -3,27 +3,26 @@ package com.dbconfig
 import org.codehaus.groovy.grails.commons.ConfigurationHolder as CH
 import org.codehaus.groovy.runtime.DefaultGroovyMethods
 
+
 class ConfigProperty {
 
 	String key
 	String value
-    String description
-	boolean disable
+	String description
 	
-	ConfigProperty(String key, String value, String description, boolean disable) {
+	ConfigProperty(String key, String value, String description) {
 		this.key = key
 		this.value = value
 		this.description = description
-		this.disable = disable
 	}
-    
-    static constraints = {
-        key (
-            blank: false,
-            nullable: false,
-            maxSize: 100,
+	
+	static constraints = {
+		key (
+			blank: false,
+			nullable: false,
+			maxSize: 100,
 			unique: true
-        )
+		)
 		value (
 			blank: false,
 			nullable: false,
@@ -34,22 +33,19 @@ class ConfigProperty {
 			nullable: true,
 			maxSize: 255
 		)
-		disable (
-			blank: false,
-			nullable: false
-		)
-    }
+	}
 
-    static mapping = {
-        //id generator: 'sequence', params: [sequence: 'config_seq']
-    }
+	static mapping = {
+		//id generator: 'sequence', params: [sequence: 'config_seq']
+	}
 	
 	String toString() {
 		value
 	}
 	
 	def beforeDelete = {
-		CH.config.remove(key)
+		deleteConfigMap()
+		//CH.config.remove(key)
 	}
 
 	def beforeInsert = {
@@ -61,9 +57,37 @@ class ConfigProperty {
 	}
 	
 	def updateConfigMap() {
-		Boolean useQuotes = !(((value ==~ /\[.*]/)) || DefaultGroovyMethods.isNumber(value) || DefaultGroovyMethods.isFloat(value) || value in ['true', 'false'])
-		String objectString = useQuotes ? "${key}='''${value}'''" : "${key}=${value}"
-        ConfigObject configObject = new ConfigSlurper().parse(objectString)
-        CH.config.merge(configObject)
-    }
+		Boolean useQuotes = !(DefaultGroovyMethods.isNumber(value) || DefaultGroovyMethods.isFloat(value) || value in ['true', 'false'])
+		String objectString
+		if(key ==~ /(.*[^a-zA-Z0-9\.]+.*)/){
+			objectString = "'''${key}=${value}'''"
+		}
+		else{
+			objectString = useQuotes ? "${key}='''${value}'''" : "${key}=${value}"
+		}
+		
+		ConfigObject configObject = new ConfigSlurper().parse(objectString)
+		CH.config.merge(configObject)
+	}
+	
+	def deleteConfigMap() {
+		def previousValue = CH.flatConfig[key]?.toString()
+		if(previousValue){
+			Boolean useQuotes = !(DefaultGroovyMethods.isNumber(previousValue) || DefaultGroovyMethods.isFloat(previousValue) || previousValue in ['true', 'false'])
+			String objectString
+			if(key ==~ /(.*[^a-zA-Z0-9\.]+.*)/){
+					objectString = "'''${key}=${previousValue}'''"
+			}
+			else{
+				objectString = useQuotes ? "${key}='''${previousValue}'''" : "${key}=${previousValue}"
+			}
+				
+			ConfigObject configObject = new ConfigSlurper().parse(objectString)
+			CH.config.merge(configObject)
+		}
+		else{
+			CH.config.remove(key)
+		}
+		
+	}
 }

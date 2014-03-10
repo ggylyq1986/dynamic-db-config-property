@@ -82,6 +82,7 @@
     border: 1px solid #8FC9E0;
     color: #17759B;
     font-weight: bold;
+    widtn:auto !improtant
 }
 .ui-state-default a, .ui-state-default a:link, .ui-state-default a:visited {
     color: #17759B;
