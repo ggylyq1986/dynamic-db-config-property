@@ -142,7 +142,7 @@ class ConfigPropertyController {
 	
 	def compare() {
 		def fileProperties = grailsApplication.flatConfig
-		def dbProperties = ConfigProperty.findAllByDisable(true)
+		def dbProperties = ConfigProperty.list()
 		
 		def comparedProperties = dbProperties.collect {
 			def dbProperty = it.value

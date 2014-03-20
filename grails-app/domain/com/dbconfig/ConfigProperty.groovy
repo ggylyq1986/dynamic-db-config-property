@@ -20,18 +20,18 @@ class ConfigProperty {
 		key (
 			blank: false,
 			nullable: false,
-			maxSize: 100,
+			maxSize: 1000,
 			unique: true
 		)
 		value (
 			blank: false,
 			nullable: false,
-			maxSize: 100
+			maxSize: 2000
 		)
 		description (
 			blank: true,
 			nullable: true,
-			maxSize: 255
+			maxSize: 2000
 		)
 	}
 

@@ -9,9 +9,6 @@
 		<style type="text/css">
 		td, tr{
 			font-size: 12px;
-			overflow: hidden;
-			text-overflow: ellipsis;
-			white-space: nowrap;
 		}
 		table{
 			table-layout: fixed;
