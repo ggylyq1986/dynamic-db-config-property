@@ -21,20 +21,20 @@ class ConfigPropertyController {
 		
 		def fileProperties = grailsApplication.flatConfig
 		
-		def comparedProperties = fileProperties.collect {key, value ->
-			def dbProperty = ConfigProperty.findByKey(key)
+		def comparedProperties = fileProperties.collect {configKey, value ->
+			def dbProperty = ConfigProperty.findByConfigKey(configKey)
 			def isInDb = dbProperty? true : false 
 			def dbId = dbProperty? dbProperty.id : null
-			def currentPro = dbProperty? dbProperty.value?.toString() :  grailsApplication.flatConfig[key]?.toString()
+			def currentPro = dbProperty? dbProperty.value?.toString() :  grailsApplication.flatConfig[configKey]?.toString()
 			
-			new ComparedProperty(dbId, key.toString(), value.toString(), dbProperty?.value?.toString(), currentPro, isInDb)
+			new ComparedProperty(dbId, configKey.toString(), value.toString(), dbProperty?.value?.toString(), currentPro, isInDb)
 		}
 		
 		ConfigProperty.list().each {
 			
-			if(!grailsApplication.flatConfig[it.key] && !"".equals(grailsApplication.flatConfig[it.key])){
-				grailsApplication.flatConfig[it.key] = ""
-				def comparedProperty = new ComparedProperty(it.id, it.key.toString(), null, it.value?.toString(), it.value?.toString(), true)
+			if(!grailsApplication.flatConfig[it.configKey] && !"".equals(grailsApplication.flatConfig[it.configKey])){
+				grailsApplication.flatConfig[it.configKey] = ""
+				def comparedProperty = new ComparedProperty(it.id, it.configKey.toString(), null, it.value?.toString(), it.value?.toString(), true)
 				if(!comparedProperties.contains(comparedProperty)){
 					comparedProperties.add(comparedProperty)
 				}
@@ -134,7 +134,7 @@ class ConfigPropertyController {
 	
 	def addToFrequentlyUsedList() {
 		
-		def configProperty = new ConfigProperty(params.key?.toString(), params.value?.toString(), "")
+		def configProperty = new ConfigProperty(params.configKey?.toString(), params.value?.toString(), "")
 		configProperty.save()
 		
 		render configProperty.id
@@ -146,9 +146,9 @@ class ConfigPropertyController {
 		
 		def comparedProperties = dbProperties.collect {
 			def dbProperty = it.value
-			def fileProperty = fileProperties[it.key]
+			def fileProperty = fileProperties[it.configKey]
 			
-			new ComparedProperty(it.key?.toString(), dbProperty?.toString(), fileProperty?.toString(), null)
+			new ComparedProperty(it.configKey?.toString(), dbProperty?.toString(), fileProperty?.toString(), null)
 		}
 		
 		[comparedProperties: comparedProperties]
@@ -157,15 +157,15 @@ class ConfigPropertyController {
 
 class ComparedProperty {
 	def dbId
-	String key
+	String configKey
 	String fileProperty
 	String dbProperty
 	String currentProperty
 	boolean isInDb
 	
-	public ComparedProperty (def dbId, String key, String fileProperty, String dbProperty, String currentProperty, boolean isInDb) {
+	public ComparedProperty (def dbId, String configKey, String fileProperty, String dbProperty, String currentProperty, boolean isInDb) {
 		this.dbId = dbId
-		this.key = key
+		this.configKey = configKey
 		this.fileProperty = fileProperty
 		this.dbProperty = dbProperty
 		this.currentProperty = currentProperty

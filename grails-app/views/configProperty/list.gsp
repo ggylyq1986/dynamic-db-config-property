@@ -9,18 +9,21 @@
 		<style type="text/css">
 		td, tr{
 			font-size: 12px;
+		    overflow: hidden;
+		    text-overflow: ellipsis;
+		    white-space: nowrap;
 		}
 		table{
 			table-layout: fixed;
 		}
 		</style>
 		<script type="text/javascript">
-		function clicked(objId, key, value, data){
+		function clicked(objId, configKey, value, data){
 			$("#"+objId).prop('checked', true)
 			$("#"+objId).prop('disabled', true)
 			$("#" + objId).parent().parent().find('td:nth-child(4)').text(value)
-			var key = $("#" + objId).parent().parent().find('td:nth-child(2)').text()
-			var link = '<a href="${request.contextPath}/configProperty/show/' + data + '">' + key + '</a>'
+			var configKey = $("#" + objId).parent().parent().find('td:nth-child(2)').text()
+			var link = '<a href="${request.contextPath}/configProperty/show/' + data + '">' + configKey + '</a>'
 			$("#" + objId).parent().parent().find('td:nth-child(2)').get(0).innerHTML = link
 		}
 		</script>
@@ -60,19 +63,19 @@
 						<tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
 							
 							<g:if test="${isInDb || comparedProperty.dbProperty}">
-							<td><input type="checkbox" id="checkbox_${i}" name="id" value="${comparedProperty.key}" checked disabled /></td>
+							<td><input type="checkbox" id="checkbox_${i}" name="id" value="${comparedProperty.configKey}" checked disabled /></td>
 							</g:if>
 							<g:else>
 								<td><g:checkBox name='checkbox_${i}' 
-									value="${comparedProperty.key}" checked="false" 
-									onclick="${remoteFunction(action:'addToFrequentlyUsedList', params: [key:comparedProperty.key, value:comparedProperty.fileProperty], onSuccess: "clicked('checkbox_${i}', '${comparedProperty.key}', '${comparedProperty.fileProperty}', data)" )}" /></td>
+									value="${comparedProperty.configKey}" checked="false" 
+									onclick="${remoteFunction(action:'addToFrequentlyUsedList', params: [configKey:comparedProperty.configKey, value:comparedProperty.fileProperty], onSuccess: "clicked('checkbox_${i}', '${comparedProperty.configKey}', '${comparedProperty.fileProperty}', data)" )}" /></td>
 							</g:else>
 						
 							<g:if test="${comparedProperty.dbId != null}">
-								<td><g:link action="show" id="${comparedProperty.dbId}">${fieldValue(bean: comparedProperty, field: "key")}</g:link></td>
+								<td><g:link action="show" id="${comparedProperty.dbId}">${fieldValue(bean: comparedProperty, field: "configKey")}</g:link></td>
 							</g:if>
 							<g:else>
-								<td>${fieldValue(bean: comparedProperty, field: "key")}</td>
+								<td>${fieldValue(bean: comparedProperty, field: "configKey")}</td>
 							</g:else>
 						
 							<td>${fieldValue(bean: comparedProperty, field: "fileProperty")}</td>

@@ -5,8 +5,8 @@ class CustomTagLib {
 	def isInConfigFile = { attrs ->
 		
 		def isInConfigFile = false
-		attrs.properties.each {key, value ->
-			if(attrs.pKey.equals(key)){
+		attrs.properties.each {configKey, value ->
+			if(attrs.pConfigKey.equals(configKey)){
 				isInConfigFile = true
 				return
 			}

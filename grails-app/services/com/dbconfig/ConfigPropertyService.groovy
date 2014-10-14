@@ -4,16 +4,16 @@ import com.dbconfig.ConfigProperty
 
 class ConfigPropertyService {
 
-    def loadValues(String key, def value) {
+    def loadValues(String configKey, def value) {
 		try {
 			if (value?.toString() && !((value instanceof List) || (value instanceof Closure))) {
-				ConfigProperty configProperty = ConfigProperty.findByKey(key)
+				ConfigProperty configProperty = ConfigProperty.findByConfigKey(configKey)
 				if(!configProperty){// && !value?.toString()?.contains("'")
-					new ConfigProperty(key: key, value: value.toString(), description:"").save()
+					new ConfigProperty(configKey: configKey, value: value.toString(), description:"").save()
 				}
 			}
 		} catch (Exception e) {
-			log.warn "Exception ${e.message} for " + value + " key : ${key}"
+			log.warn "Exception ${e.message} for " + value + " configKey : ${configKey}"
 		}
 	}
 }

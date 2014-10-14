@@ -23,11 +23,11 @@
 				</g:if>
 				<ol class="property-list configProperty">
 				
-					<g:if test="${configPropertyInstance?.key}">
+					<g:if test="${configPropertyInstance?.configKey}">
 					<li class="fieldcontain">
-						<span id="key-label" class="property-label"><g:message code="configProperty.key.label" default="Key" /></span>
+						<span id="configKey-label" class="property-label"><g:message code="configProperty.configKey.label" default="configKey" /></span>
 						
-							<span class="property-value" aria-labelledby="key-label"><g:fieldValue bean="${configPropertyInstance}" field="key"/></span>
+							<span class="property-value" aria-labelledby="configKey-label"><g:fieldValue bean="${configPropertyInstance}" field="configKey"/></span>
 						
 					</li>
 					</g:if>
